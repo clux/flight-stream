@@ -6,6 +6,7 @@
     "latitude": 51.4463184,
     "longitude": -0.4443485
   },
+  "maxDistance": 7000,
   "clockShift": 0,
   "clockReason": "relative to south of heathrow"
 }

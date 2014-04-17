@@ -1,12 +1,11 @@
 var planefinder = require('planefinder')
-  , geolib = require('geolib');
+  , geolib = require('geolib')
   , cfgPath = require('confortable')('.flightbot.json', process.cwd())
   , cfg = require(cfgPath);
 
-// observe planes within 7km of location
-var maxDistance = 7*1000;  // meters
+// observe planes within specified distance
 var loc = cfg.location;
-var bounds = geolib.getBoundsOfDistance(loc, maxDistance);
+var bounds = geolib.getBoundsOfDistance(loc, cfg.maxDistance);
 
 var ordinals = [
   'twelve', 'one', 'two', 'three', 'four', 'five',
@@ -18,9 +17,8 @@ var bearingToClock = function (bear) {
   return Math.floor(bear/units) % 12;
 };
 
-
-// ICAO code for A380 is A388
-var isAppropriate = function (t) {
+var isLowFlyingA380 = function (t) {
+  // ICAO code for A380 is A388
   return t.aircraft === 'A388' &&
          t.altitude > 0 &&
          t.altitude < 10000 &&
@@ -67,7 +65,7 @@ var stream = new PlaneStream();
 
 var client = planefinder.createClient({ bounds: bounds });
 client.on('data', function(traffic) {
-  traffic.filter(isAppropriate).map(stream.identify.bind(stream));
+  traffic.filter(isLowFlyingA380).map(stream.identify.bind(stream));
 }).resume();
 
 module.exports = stream;

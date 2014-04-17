@@ -6,7 +6,7 @@ var loc = {
   latitude: 51.4463184,
   longitude: -0.4443485
 };
-var maxDistance = 7000;  // meters
+var maxDistance = 7*1000;  // meters
 var bounds = geolib.getBoundsOfDistance(loc, maxDistance);
 
 var ordinals = [
@@ -23,11 +23,12 @@ var bearingToClock = function (bear) {
 var cfgPath = require('confortable')('.flightbot.json', process.cwd());
 var cfg = require(cfgPath);
 
+// ICAO code for A380 is A388
 var isAppropriate = function (t) {
-  return t.altitude > 0 &&
+  return t.aircraft === 'A388' &&
+         t.altitude > 0 &&
          t.altitude < 10000 &&
-         t.aircraft === 'A380' &&
-         t.callsign != ''; // ensure no empty strings in streams obsrv hash
+         t.callsign !== ''; // ensure no empty strings in streams obsrv hash
 };
 
 // if person faces the east => his 12 o'clock is east
@@ -44,7 +45,7 @@ var formater = function (t) {
     desc += " is flight " + t.callsign;
   }
   console.log(desc + ' at ' + dir + " o'clock, " + dist + 'm away, @' + t.altitude + 'ft');
-  return 'Airbus at ' + dir + " o'clock! (" + t.callsign + " is " + dist + 'm away)';
+  return 'at ' + dir + " o'clock! (" + t.callsign + " is " + dist + 'm away)';
 };
 
 // create a readable stream to populate
@@ -60,8 +61,8 @@ function PlaneStream(opts) {
 PlaneStream.prototype = Object.create(Readable.prototype);
 PlaneStream.prototype._read = function () {}; // nothing to read by default
 PlaneStream.prototype.identify = function (t) {
-  var str = 'jobrand: ' + formater(t);
-  if (!this.obsrv[t.callsign] || this.obsrv[t.callsign] < Date.now() + 30*1000) {
+  var str = formater(t); // ensure we log regardless of spam protection
+  if (!this.obsrv[t.callsign] || this.obsrv[t.callsign] < Date.now() + 5*1000) {
     this.obsrv[t.callsign] = Date.now(); // ensure only track once every 30s
     this.push({ message: str, user: cfg.chan });
   }

@@ -1,0 +1,7 @@
+{
+ "name": "A380",
+ "server": "irc.quakenet.org",
+ "chan": "#testor",
+ "clockShift": 0,
+ "clockReason": "relative to south of heathrow"
+}

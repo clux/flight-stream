@@ -1,12 +1,11 @@
-planefinder = require('planefinder');
-geolib = require('geolib');
+var planefinder = require('planefinder')
+  , geolib = require('geolib');
+  , cfgPath = require('confortable')('.flightbot.json', process.cwd())
+  , cfg = require(cfgPath);
 
 // observe planes within 7km of location
-var loc = {
-  latitude: 51.4463184,
-  longitude: -0.4443485
-};
 var maxDistance = 7*1000;  // meters
+var loc = cfg.location;
 var bounds = geolib.getBoundsOfDistance(loc, maxDistance);
 
 var ordinals = [
@@ -19,9 +18,6 @@ var bearingToClock = function (bear) {
   return Math.floor(bear/units) % 12;
 };
 
-
-var cfgPath = require('confortable')('.flightbot.json', process.cwd());
-var cfg = require(cfgPath);
 
 // ICAO code for A380 is A388
 var isAppropriate = function (t) {

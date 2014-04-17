@@ -1,7 +1,7 @@
 {
   "name": "flightbot",
   "private": true,
-  "description": "A bot that tracks A380s near Heathrow",
+  "description": "A bot that tracks nearby A380s",
   "author": "Eirik Albrigtsen <analsandblaster@gmail.com>",
   "version": "0.0.0",
   "repository": {

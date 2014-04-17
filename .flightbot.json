@@ -1,7 +1,11 @@
 {
- "name": "A380",
- "server": "irc.quakenet.org",
- "chan": "#testor",
- "clockShift": 0,
- "clockReason": "relative to south of heathrow"
+  "name": "A380",
+  "server": "irc.quakenet.org",
+  "chan": "#testor",
+  "location": {
+    "latitude": 51.4463184,
+    "longitude": -0.4443485
+  },
+  "clockShift": 0,
+  "clockReason": "relative to south of heathrow"
 }

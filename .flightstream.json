@@ -5,13 +5,12 @@
     "chan": "#testor"
   },
   "location": {
-    "latitude": 51.4463184,
-    "longitude": -0.4443485
+    "latitude": 51.5083818,
+    "longitude": -0.5596166
   },
   "aircraft": "A388",
   "maxDistance": 10000,
   "maxAltitude": 10000,
   "throttleInterval": 5,
-  "clockShift": 0,
-  "clockReason": "relative to south of heathrow"
+  "clockShift": 0
 }

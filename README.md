@@ -7,6 +7,15 @@ This is a readable stream in `objectMode` that will provide flight information n
 ## Usage
 The library exposes only a readable stream that you may use however you like. The helper file irc.js uses it to pipe the information to an IRC channel via [irc-stream](http://npmjs.org/package/irc-stream).
 
+Here is a simple way to just dump all matching planes spotted to console:
+
+```js
+var PlaneStream = require('plane-stream');
+new PlaneStream(config).on('data', function (plane) {
+  console.log("%j", plane);
+});
+```
+
 ## Configuration
 Set your location, and optionally, some of these:
 

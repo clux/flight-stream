@@ -17,55 +17,55 @@ var bearingToClock = function (bear) {
   return Math.floor(bear/units) % 12;
 };
 
-var isLowFlyingA380 = function (t) {
-  // ICAO code for A380 is A388
-  return t.aircraft === 'A388' &&
-         t.altitude > 0 &&
-         t.altitude < 10000 &&
+var isMatchingLowFlier = function (t) {
+  if (cfg.aircraft && t.aircraft !== cfg.airCraft) {
+    return false;
+  }
+  return t.altitude > 0 &&
+         t.altitude < cfg.maxAltitude &&
          t.callsign !== ''; // ensure no empty strings in streams obsrv hash
 };
 
 // if person faces the east => his 12 o'clock is east
 var clockModifier = function (clock) {
-  return Math.floor(clock + cfg.clockShift + 12) % 12;
+  return (clock + cfg.clockShift + 12) % 12;
 };
 
-var formater = function (t) {
-  var dist = geolib.getDistance(loc, { latitude: t.lat, longitude: t.lon })
-    , bear = geolib.getRhumbLineBearing(loc, { latitude: t.lat, longitude: t.lon })
-    , dir = ordinals[clockModifier(bearingToClock(bear))]
-    , desc = t.aircraft + " (" + t.journey + ")";
+var calculateProperties = function (t) {
+  var bear = geolib.getRhumbLineBearing(loc, { latitude: t.lat, longitude: t.lon });
+  var o = {
+    distance: geolib.getDistance(loc, { latitude: t.lat, longitude: t.lon }),
+    bearing: bear,
+    direction: ordinals[clockModifier(bearingToClock(bear))],
+    aircraft: t.aircraft,
+    journey: t.journey,
+    altitude: t.altitude
+  };
   if (t.journey && t.journey !== t.callsign) {
-    desc += " is flight " + t.callsign;
+    o.flight = t.callsign;
   }
-  console.log(desc + ' at ' + dir + " o'clock, " + dist + 'm away, @' + t.altitude + 'ft');
-  return 'at ' + dir + " o'clock! (" + t.callsign + " is " + dist + 'm away)';
+  return o;
 };
 
 // create a readable stream to populate
 var Readable = require('stream').Readable;
-function PlaneStream(opts) {
-  if (!(this instanceof PlaneStream)) {
-    return new PlaneStream(opts);
-  }
-  this.chan = cfg.chan;
+function PlaneStream() {
   this.obsrv = Object.create(null); // flight number to last observed hash
   Readable.call(this, { objectMode: true });
 }
 PlaneStream.prototype = Object.create(Readable.prototype);
 PlaneStream.prototype._read = function () {}; // nothing to read by default
 PlaneStream.prototype.identify = function (t) {
-  var str = formater(t); // ensure we log regardless of spam protection
   if (!this.obsrv[t.callsign] || this.obsrv[t.callsign] < Date.now() + 5*1000) {
     this.obsrv[t.callsign] = Date.now(); // ensure only track once every 30s
-    this.push({ message: str, user: cfg.chan });
+    this.push(calculateProperties(t));
   }
 };
 var stream = new PlaneStream();
 
 var client = planefinder.createClient({ bounds: bounds });
 client.on('data', function(traffic) {
-  traffic.filter(isLowFlyingA380).map(stream.identify.bind(stream));
+  traffic.filter(isMatchingLowFlier).map(stream.identify.bind(stream));
 }).resume();
 
 module.exports = stream;

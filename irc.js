@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-var cfgPath = require('confortable')('.flightbot.json', process.cwd());
+var cfgPath = require('confortable')('.flightstream.json', process.cwd());
 if (!cfgPath) {
   throw new Error("When loading fligthbot externally, a local config is required");
 }

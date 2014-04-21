@@ -1,6 +1,6 @@
 var planefinder = require('planefinder')
   , geolib = require('geolib')
-  , cfgPath = require('confortable')('.flightbot.json', process.cwd())
+  , cfgPath = require('confortable')('.flightstream.json', process.cwd())
   , cfg = require(cfgPath);
 
 // observe planes within specified distance
@@ -56,8 +56,9 @@ function PlaneStream() {
 PlaneStream.prototype = Object.create(Readable.prototype);
 PlaneStream.prototype._read = function () {}; // nothing to read by default
 PlaneStream.prototype.identify = function (t) {
-  if (!this.obsrv[t.callsign] || this.obsrv[t.callsign] < Date.now() + 5*1000) {
-    this.obsrv[t.callsign] = Date.now(); // ensure only track once every 30s
+  var d = Date.now() + cfg.throttleInterval*1000;
+  if (!this.obsrv[t.callsign] || this.obsrv[t.callsign] < d) {
+    this.obsrv[t.callsign] = Date.now();
     this.push(calculateProperties(t));
   }
 };

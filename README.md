@@ -11,10 +11,11 @@ The library exposes only a readable stream that you may use however you like. Th
 Set your location, and optionally, some of these:
 
 - `irc` if using the irc-stream example
-- `aircraft` if want to filter by a single aircraft
+- `aircraft` if want to filter by a single aircraft using [ICAO codes](http://en.wikipedia.org/wiki/ICAO_aircraft_type_designator)
 - `maxDistance` the size of the bounding box to search for planes in meters
 - `maxAltitude` of a plane in feet
 - `clockShift` if you would not want to use relative north for direction output
+- `throttleInterval` in seconds if you feel you get too many updates
 
 ## License
 MIT-Licensed. See LICENSE file for details.

@@ -10,6 +10,13 @@ The library exposes only a readable stream that you may use however you like. Th
 Here is a simple way to just dump all matching planes spotted to console:
 
 ```js
+var config = {
+  location: {
+    latitude: 51.5083818,
+    longitude: -0.5596166
+  },
+  maxDistance: 5*1000
+};
 var PlaneStream = require('plane-stream');
 new PlaneStream(config).on('data', function (plane) {
   console.log("%j", plane);
@@ -17,9 +24,9 @@ new PlaneStream(config).on('data', function (plane) {
 ```
 
 ## Configuration
-Set your location, and optionally, some of these:
+For the `config` object, the only thing you need to set is your location. But additionally you can set:
 
-- `irc` if using the irc-stream example
+- `irc` if using the irc-stream example - then see the .flightstream.json file
 - `aircraft` if want to filter by a single aircraft using [ICAO codes](http://en.wikipedia.org/wiki/ICAO_aircraft_type_designator)
 - `maxDistance` the size of the bounding box to search for planes in meters
 - `maxAltitude` of a plane in feet

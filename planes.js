@@ -18,7 +18,7 @@ var bearingToClock = function (bear) {
 };
 
 var isMatchingLowFlier = function (t) {
-  if (cfg.aircraft && t.aircraft !== cfg.airCraft) {
+  if (cfg.aircraft && t.aircraft !== cfg.aircraft) {
     return false;
   }
   return t.altitude > 0 &&

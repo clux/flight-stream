@@ -23,7 +23,7 @@ var calculateProperties = function (t, loc, modifier) {
     aircraft: t.aircraft,
     journey: t.journey,
     altitude: t.altitude,
-    time: d.getHours() + ':' + d.getMinutes()
+    time: d.getHours() + ':' + ('00' + d.getMinutes()).slice(-2)
   };
   if (t.journey && t.journey !== t.callsign) {
     o.flight = t.callsign;

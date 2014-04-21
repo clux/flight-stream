@@ -1,7 +1,7 @@
 {
   "name": "flight-stream",
   "private": true,
-  "description": "A bot that tracks nearby A380s",
+  "description": "A readable stream that tracks nearby aircrafts",
   "author": "Eirik Albrigtsen <analsandblaster@gmail.com>",
   "version": "0.0.0",
   "repository": {

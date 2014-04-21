@@ -26,7 +26,6 @@ new PlaneStream(config).on('data', function (plane) {
 ## Configuration
 For the `config` object, the only thing you need to set is your location. But additionally you can set:
 
-- `irc` if using the irc-stream example - then see the .flightstream.json file
 - `aircraft` if want to filter by a single aircraft using [ICAO codes](http://en.wikipedia.org/wiki/ICAO_aircraft_type_designator)
 - `maxDistance` the size of the bounding box to search for planes in meters
 - `maxAltitude` of a plane in feet

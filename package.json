@@ -9,7 +9,7 @@
     "url": "clux/flight-stream"
   },
   "keywords": [],
-  "main": "planes.js",
+  "main": "flightstream.js",
   "scripts": {
     "test": "$(npm bin)/tap test/*.js"
   },

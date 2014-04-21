@@ -4,9 +4,9 @@ if (!cfgPath) {
   throw new Error("When loading fligthbot externally, a local config is required");
 }
 var cfg = require(cfgPath);
-var PlaneStream = require('./');
+var FlightStream = require('./');
 
-new PlaneStream(cfg).on('data', function (o) {
+new FlightStream(cfg).on('data', function (o) {
   var found = o.time + ' - ' + o.aircraft + " at " + o.direction + " o'clock.";
   var where = " " + (o.flight || o.journey) + " is " + o.distance + 'm away';
   var alt = " at " + o.altitude + "ft";

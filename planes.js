@@ -32,11 +32,11 @@ var calculateProperties = function (t, loc, modifier) {
 };
 
 // create a readable stream to populate
-function PlaneStream() {
+function FlightStream() {
   Readable.call(this, { objectMode: true });
 }
-PlaneStream.prototype = Object.create(Readable.prototype);
-PlaneStream.prototype._read = function () {}; // nothing to read by default
+FlightStream.prototype = Object.create(Readable.prototype);
+FlightStream.prototype._read = function () {}; // nothing to read by default
 
 module.exports = function (cfg) {
   // observe planes within specified distance
@@ -51,7 +51,7 @@ module.exports = function (cfg) {
            t.callsign !== ''; // ensure no empty strings in streams obsrv hash
   };
 
-  var stream = new PlaneStream();
+  var stream = new FlightStream();
   var obsrvd = Object.create(null); // flight number to last observed hash
 
   planefinder.createClient({ bounds: bounds }).on('data', function (traffic) {

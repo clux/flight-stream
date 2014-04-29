@@ -16,7 +16,7 @@
   "dependencies": {
     "irc-stream": "0.0.8",
     "geolib": "^1.3.5",
-    "planefinder": "^0.0.5"
+    "planefinder": "clux/node-planefinder"
   },
   "devDependencies": {
     "tap": "~0.4.4",

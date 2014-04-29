@@ -40,14 +40,16 @@ FlightStream.prototype._read = function () {}; // nothing to read by default
 
 module.exports = function (cfg) {
   // observe planes within specified distance
-  var bounds = geolib.getBoundsOfDistance(cfg.location, (cfg.maxDistance | 10*1000));
+  var dist = (cfg.maxDistance | 0) || 10*1000;
+  var maxAlt = (cfg.maxAltitude | 0) || 100*1000;
+  var bounds = geolib.getBoundsOfDistance(cfg.location, dist);
 
   var isMatchingLowFlier = function (t) {
     if (cfg.aircraft && t.aircraft !== cfg.aircraft) {
       return false;
     }
     return t.altitude > 0 &&
-           t.altitude < (cfg.maxAltitude | 100*1000) &&
+           t.altitude < maxAlt &&
            t.callsign !== ''; // ensure no empty strings in streams obsrv hash
   };
 
@@ -56,8 +58,8 @@ module.exports = function (cfg) {
 
   planefinder.createClient({ bounds: bounds }).on('data', function (traffic) {
     traffic.filter(isMatchingLowFlier).map(function (t) {
-      var d = Date.now() + (cfg.throttleInterval | 0)*1000; // basic throttling
-      if (!obsrvd[t.callsign] || obsrvd[t.callsign] < d) {
+      var thr = (cfg.throttleInterval | 0)*1000; // basic throttling
+      if (!obsrvd[t.callsign] || obsrvd[t.callsign] < Date.now() - thr) {
         obsrvd[t.callsign] = Date.now();
         stream.push(calculateProperties(t, cfg.location, cfg.clockShift | 0));
       }

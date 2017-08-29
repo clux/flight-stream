@@ -1,7 +1,7 @@
 {
   "name": "flight-stream",
   "description": "A readable stream that tracks nearby aircrafts",
-  "author": "Eirik Albrigtsen <analsandblaster@gmail.com>",
+  "author": "Eirik Albrigtsen <sszynrae@gmail.com>",
   "version": "0.1.1",
   "repository": {
     "type": "git",
